@@ -81,4 +81,4 @@ optional arguments:
   - `extractors-json/`: Directory to store the JSON files for extractors
     - `all_extractors.json`: JSON file containing all extractors downloaded from the default GitHub URL or a specified URL
     - `local_extractors.json`: JSON file containing extractors to be downloaded locally
-  - `get_latest`: Script to set up the environment or dependencies for Indexify Local## Troubleshooting
+  - `get_latest`: Script to get the newest indexify binary for your system. 
