@@ -88,24 +88,24 @@ def generate_supervisord_conf(input_file="indexify-local/extractors-json/local_e
         conf_template = """
             [supervisord]
             nodaemon=true
-            logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/supervisord.log
-            pidfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/supervisord.pid
-            childlogdir=%(ENV__LOCAL_DATA_DIR)s/supervisor
+            logfile=_local_data/supervisor/supervisord.log
+            pidfile=_local_data/supervisor/supervisord.pid
+            childlogdir=_local_data/supervisor
 
             [program:indexify_server]
-            command=%(ENV_INDEXIFY_LOCAL_DIR)s/indexify server  -d --config-path %(ENV_INDEXIFY_LOCAL_DIR)s/indexify.init.config
+            command=indexify-local/indexify server  -d --config-path indexify-local/indexify.init.config
             autostart=true
             autorestart=true
-            stderr_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/indexify_server.err.log
-            stdout_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/indexify_server.out.log
+            stderr_logfile=_local_data/supervisor/logs/indexify_server.err.log
+            stdout_logfile=_local_data/supervisor/logs/indexify_server.out.log
             priority=1
 
             [program:watch_folder]
-            command=python %(ENV_WATCH_FOLDER_DIR)s/watch_folder.py
+            command=python utils/watch-folder/watch_folder.py
             autostart=true
             autorestart=true
-            stderr_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/watch_folder.err.log
-            stdout_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/watch_folder.out.log
+            stderr_logfile=_local_data/supervisor/logs/watch_folder.err.log
+            stdout_logfile=_local_data/supervisor/logs/watch_folder.out.log
             priority=2
             """
 
@@ -114,11 +114,11 @@ def generate_supervisord_conf(input_file="indexify-local/extractors-json/local_e
             module = module_name.split(".")[0]
             conf_template += f"""
             [program:{module}]
-            command=indexify-extractor join-server {module_name} --coordinator-addr %(ENV_COORDINATOR_ADDR)s --ingestion-addr %(ENV_INGESTION_ADDR)s
+            command=indexify-extractor join-server {module_name} --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
             autostart=true
             autorestart=true
-            stderr_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/{module}.err.log
-            stdout_logfile=%(ENV__LOCAL_DATA_DIR)s/supervisor/logs/{module}.out.log
+            stderr_logfile=_local_data/supervisor/logs/{module}.err.log
+            stdout_logfile=_local_data/supervisor/logs/{module}.out.log
             priority=3
             """
 
