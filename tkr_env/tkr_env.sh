@@ -64,7 +64,7 @@ if [ -d "$env_name" ]; then
     echo -e "\e[38;5;208mActivated '$env_name'.\e[0m"
     
     # Call the function to check and add Python path
-    add_python_path
+    # add_python_path
 else
     # Create the virtual environment if it does not exist
     python3 -m venv $env_name
@@ -98,7 +98,7 @@ else
                 echo "\n"
 
                 # Call the function to check and add Python path
-                add_python_path
+                # add_python_path
             fi
             break
         else

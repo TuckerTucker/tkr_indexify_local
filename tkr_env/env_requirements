@@ -5,3 +5,5 @@ watchdog
 indexify
 indexify-extractor-sdk
 indexify-langchain
+
+langchain_openai
