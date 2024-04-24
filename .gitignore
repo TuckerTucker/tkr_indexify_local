@@ -7,6 +7,7 @@ supervisord.conf
 
 indexify_env
 _watch_folder/*
+indexify-local/_local_data
 indexify-local/extractors-json/*
 sample.mp3
 sample.pdf
