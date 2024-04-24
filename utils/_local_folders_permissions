@@ -1,0 +1,14 @@
+#!/bin/bash
+
+directories=("_local_data" "_watch_folder")
+
+for directory in "${directories[@]}"
+do
+  # Check if the directory has the desired permissions
+  if [ -r "$directory" -a -w "$directory" -a -r "$directory" -a -r "$directory" ]; then
+    echo "Permissions for $directory are already set correctly."
+  else
+    echo "Updating permissions for $directory..."
+    chmod -R u+rw,g+r,o+r "$directory"
+  fi
+done

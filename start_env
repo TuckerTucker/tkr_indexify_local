@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd tkr_env
+source tkr_env.sh
+cd ..

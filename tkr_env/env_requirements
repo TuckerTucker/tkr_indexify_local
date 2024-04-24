@@ -1,0 +1,7 @@
+colorama
+supervisor
+watchdog
+
+indexify
+indexify-extractor-sdk
+indexify-langchain

@@ -1,0 +1,13 @@
+# logs etc
+_local_data/supervisor/logs/*
+_local_data/supervisor/supervisord.log
+_watch_folder/*
+_indexify_env
+__pycache__
+
+#tkr stuff
+supervisord.conf.bak
+_next_steps.md
+
+# the indexify binary
+indexify-local/indexify

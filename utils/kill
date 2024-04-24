@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Set the default service name
+service_name="indexify"
+
+# Function to print help message
+print_help() {
+  echo "Usage: $0 [options]"
+  echo "Options:"
+  echo "-h, --help             Show this help message and exit"
+  echo "--service-name NAME    Set the service name to stop (default: indexify)"
+  echo "Example: $0 --service-name myservice"
+  exit 0
+}
+
+# Check if the --help or -h argument is provided
+if [[ $1 == "--help" || $1 == "-h" ]]; then
+  print_help
+fi
+
+# Check if the --service-name argument is provided
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+    --service-name)
+      service_name="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    *)
+      echo "Unknown argument: $key"
+      print_help
+      exit 1
+      ;;
+  esac
+done
+
+# Find the PIDs of the service
+pids=$(ps aux | grep "$service_name" | grep -v grep | awk '{print $2}')
+
+# Check if the service is running
+if [ -z "$pids" ]; then
+  echo "Service '$service_name' is not running."
+  exit 0
+fi
+
+# Kill the service processes
+echo "Killing service '$service_name' with PIDs: $pids"
+echo "$pids" | xargs kill
+
+# Wait for a few seconds to allow the service to terminate
+sleep 2
+
+# Check if any of the service processes are still running
+for pid in $pids; do
+  if ps -p "$pid" > /dev/null; then
+    echo "Service process with PID $pid could not be killed. Forcefully terminating..."
+    kill -9 "$pid"
+  fi
+done
+
+echo "Service '$service_name' has been successfully killed."
