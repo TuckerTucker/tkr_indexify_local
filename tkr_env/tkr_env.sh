@@ -1,4 +1,4 @@
-        #!/bin/bash
+#!/bin/bash
 
 # Function to display help message
 display_help() {
