@@ -1,0 +1,45 @@
+[supervisord]
+            nodaemon=true
+            logfile=_local_data/supervisor/supervisord.log
+            pidfile=_local_data/supervisor/supervisord.pid
+            childlogdir=_local_data/supervisor
+
+            [program:indexify_server]
+            command=indexify-local/indexify server  -d --config-path indexify-local/indexify.init.config
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/indexify_server.err.log
+            stdout_logfile=_local_data/supervisor/logs/indexify_server.out.log
+            priority=1
+            
+            [program:indexify_ui]
+            command=./start_ui
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/indexify_ui.err.log
+            stdout_logfile=_local_data/supervisor/logs/indexify_ui.out.log
+            priority=3
+
+            [program:watch_folder]
+            command=python utils/watch-folder/watch_folder.py
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/watch_folder.err.log
+            stdout_logfile=_local_data/supervisor/logs/watch_folder.out.log
+            priority=2
+            
+            [program:minilm-l6]
+            command=indexify-extractor join-server minilm-l6.minilm_l6:MiniLML6Extractor --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/minilm-l6.err.log
+            stdout_logfile=_local_data/supervisor/logs/minilm-l6.out.log
+            priority=3
+            
+            [program:whisper-mlx]
+            command=indexify-extractor join-server whisper-mlx.whisper_extractor:WhisperExtractor --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/whisper-mlx.err.log
+            stdout_logfile=_local_data/supervisor/logs/whisper-mlx.out.log
+            priority=3
