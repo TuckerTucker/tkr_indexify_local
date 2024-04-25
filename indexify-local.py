@@ -100,6 +100,14 @@ def generate_supervisord_conf(input_file="indexify-local/extractors-json/local_e
             stderr_logfile=_local_data/supervisor/logs/indexify_server.err.log
             stdout_logfile=_local_data/supervisor/logs/indexify_server.out.log
             priority=1
+            
+            [program:indexify_ui]
+            command=./start_ui
+            autostart=true
+            autorestart=true
+            stderr_logfile=_local_data/supervisor/logs/indexify_ui.err.log
+            stdout_logfile=_local_data/supervisor/logs/indexify_ui.out.log
+            priority=3
 
             [program:watch_folder]
             command=python utils/watch-folder/watch_folder.py
