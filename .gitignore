@@ -1,20 +1,22 @@
 # logs etc
 __pycache__
 _local_data/supervisor/logs/*
+_local_data/indexify/*
 supervisord.log
 supervisord.pid
 supervisord.conf
 
-indexify_env
 _watch_folder/*
-indexify-local/_local_data
+indexify_env
 indexify-local/extractors-json/*
+indexify-local/indexify.init.config
 sample.mp3
 sample.pdf
 
 #tkr stuff
 _testing
 _next_steps.md
+ui
 
 # the indexify binary
 indexify-local/indexify
