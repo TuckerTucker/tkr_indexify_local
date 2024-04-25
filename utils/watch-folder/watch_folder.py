@@ -7,6 +7,10 @@ from indexify import IndexifyClient
 from mime_types import MimeTypes
 import logging
 
+# Configure logging
+logging.basicConfig(filename='_local_data/watch_folder.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
 class FileHandler(FileSystemEventHandler):
     def on_created(self, event):
         try:
@@ -15,41 +19,40 @@ class FileHandler(FileSystemEventHandler):
             else:
                 self.process_file(event.src_path)
         except Exception as e:
-            print(f"Error processing event: {event}")
-            print(f"Error details: {str(e)}")
+            logging.error(f"Error processing event: {event}")
+            logging.exception(e)  # Log the full exception traceback
 
     def process_directory(self, directory_path):
         try:
-            print(f"\033[96mNew directory detected:\033[0m \n {directory_path}")
+            logging.info(f"New directory detected: {directory_path}")
             for root, dirs, files in os.walk(directory_path):
                 for file in files:
                     file_path = os.path.join(root, file)
                     self.process_file(file_path)
-            print("\n")
         except Exception as e:
-            print(f"Error processing directory: {directory_path}")
-            print(f"Error details: {str(e)}")
+            logging.error(f"Error processing directory: {directory_path}")
+            logging.exception(e)
 
     def process_file(self, file_path):
         try:
             file_directory, file_name = os.path.split(file_path)
             file_size = os.path.getsize(file_path)
             file_size_mb = file_size / (1024 * 1024)
-            # Get the MIME type of the file
             mime_type, _ = mimetypes.guess_type(file_path)
 
-            if mime_type in [mime for mime in MimeTypes.MIMES]:
-                logging.info(f"\033[36mProcessing file:\033[0m \n {file_name} \n")
-                # print(f"File size: {file_size_mb:.2f} MB")
-                # print(f"File type: {mime_type}")
-                # print("\n")
+            if mime_type in MimeTypes.MIMES:
+                logging.info(f"Processing file: {file_name}")
+                logging.info(f"File size: {file_size_mb:.2f} MB")
+                logging.info(f"File type: {mime_type}")
+
                 client = IndexifyClient()
                 client.upload_file(path=file_path)
             else:
-                print(f"\033[33mSkipping {file_name}\033[0m \n (MIME type: {mime_type})")
+                logging.warning(f"Skipping {file_name} (MIME type: {mime_type})")
+
         except Exception as e:
-            print(f"Error processing file: {file_path}")
-            print(f"Error details: {str(e)}")
+            logging.error(f"Error processing file: {file_path}")
+            logging.exception(e)
 
 def watch_folder(folder_path):
     event_handler = FileHandler()
@@ -69,7 +72,7 @@ def watch_folder(folder_path):
         observer.join()
 
 # Specify the folder path to watch
-folder_to_watch = "../_local_data/_watch_folder"
+folder_to_watch = "_watch_folder"
 
 # Start watching the folder
 try:
