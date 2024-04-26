@@ -1,0 +1,11 @@
+{
+    "supervisord": {
+      "input_file": "indexify-local/extractors-json/local_extractors.json",
+      "template_path": "templates/supervisord.conf.template",
+      "output_path": "supervisord.conf"
+    },
+    "indexify": {
+      "template_path": "templates/indexify.init.config.template",
+      "output_path": "indexify-local/indexify.init.config"
+    }
+  }

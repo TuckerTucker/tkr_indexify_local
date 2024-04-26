@@ -5,7 +5,7 @@
             childlogdir=_local_data/supervisor
 
             [program:indexify_server]
-            command=indexify-local/indexify server  -d --config-path indexify-local/indexify.init.config
+            command=indexify-local/indexify server -d --config-path indexify-local/indexify.init.config
             autostart=true
             autorestart=true
             stderr_logfile=_local_data/supervisor/logs/indexify_server.err.log

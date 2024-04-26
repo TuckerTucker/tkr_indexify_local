@@ -1,0 +1,13 @@
+{
+    "name":"audio-transcription",
+    "extractors":[
+        {
+            "type": "audio",
+            "module_name": "whisper-mlx.whisper_extractor:WhisperExtractor"
+        },
+        {
+            "type": "embedding",
+            "module_name": "minilm-l6.minilm_l6:MiniLML6Extractor"
+        }
+    ]
+}

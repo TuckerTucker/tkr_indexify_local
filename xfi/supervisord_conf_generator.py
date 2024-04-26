@@ -1,21 +1,22 @@
 import json
 
-def generate_supervisord_conf(input_file, output_file, template_file):
+def generate_supervisord_conf(input_file, output_file, template_file, chain_name):
     try:
         with open(input_file, "r") as file:
-            extractors = json.load(file)
+            data = json.load(file)
+            extractors = data["extractors"]
 
         extractor_programs = ""
         for extractor in extractors:
             module_name = extractor["module_name"]
             module = module_name.split(".")[0]
             extractor_programs += f"""
-            [program:{module}]
+            [program:{chain_name}-{module}]
             command=indexify-extractor join-server {module_name} --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
             autostart=true
             autorestart=true
-            stderr_logfile=_local_data/supervisor/logs/{module}.err.log
-            stdout_logfile=_local_data/supervisor/logs/{module}.out.log
+            stderr_logfile=_local_data/supervisor/logs/{chain_name}-{module}.err.log
+            stdout_logfile=_local_data/supervisor/logs/{chain_name}-{module}.out.log
             priority=3
             """
 
