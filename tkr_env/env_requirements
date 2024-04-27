@@ -1,6 +1,7 @@
 colorama
 supervisor
 watchdog
+logger
 
 indexify
 indexify-extractor-sdk

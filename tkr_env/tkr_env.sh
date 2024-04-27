@@ -89,7 +89,8 @@ else
             else
                 # Install requirements from env_requirements
                 echo -e "\e[38;5;208mInstalling requirements from env_requirements\e[0m"
-                pip install -r "env_requirements" -q > /dev/null 2>&1 &
+                #pip install --no-cache-dir -r -q "env_requirements" > /dev/null 2>&1 &
+                pip install --no-cache-dir -r "env_requirements" > /dev/null 2>&1 &
 
                 while kill -0 $! 2> /dev/null; do
                     echo -n '. '
