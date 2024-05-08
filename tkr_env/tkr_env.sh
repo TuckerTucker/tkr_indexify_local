@@ -54,8 +54,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Set default values if not provided
-env_name=${env_name:-indexify_env}
-base_dir=${base_dir:-$(pwd)}
+env_name=${env_name:-project_env} # 'project_env' is the default name
+base_dir=${base_dir:-$(pwd)} # adds the current working directory as base directory. Use call the script from outside of 
 python_path=${python_path:-$base_dir/indexify-extractors}
 
 # Check if the virtual environment already exists

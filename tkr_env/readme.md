@@ -1,9 +1,8 @@
 # Basic Python Virtual Envirionment Set Up
-
- Automatically sets up a Python virtual environment, checks the availability of a local LM Studio server, and falls back to OpenAI's API if the local server is not available. The project includes scripts for environment setup and server interaction, making it easy to start experimenting with LLMs.
-
+ Automatically sets up a Python virtual environment. 
 
 ## What it does
+
 
 Run the script
 
@@ -11,9 +10,18 @@ Run the script
     source tkr_env.sh
     ```
 
+    or move this outside of tkr_env folder (into your project folder)
+    start_env.MoveThisUpOneDirectory
+    and remove the .MoveThisUpOneDirectory
+
+    ```bash
+    source start_env
+    ```    
+
+    
 1. First it checks if the environment exists.
-No environment? - Creates and activates the environtment then installs all packages in 'requirements' (listed below). 
-Environment? - Activates the environment.
+env true: Creates and activates the environtment then installs all packages in 'env_requirements' (listed below). 
+env false: Activates the environment.
 
 ### Change Environment Nmme
 Set the `env_name` variable in `tkr_env.sh` to customize the name of the virtual environment before it's created.
