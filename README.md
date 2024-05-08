@@ -37,19 +37,11 @@ cd ui
 npm install
 ```
 
-### Add Local Recipe
-
-To add a new local recipe, use the following command:
-
-```bash
---new-local whisper_chain.json
-```
-
 ## Setup Indexify Local
 
 ### Initial Setup
 
-Run the setup process with this command:
+Run the setup process using this command:
 
 ```bash
 python xfi-local.py --setup
@@ -57,62 +49,89 @@ python xfi-local.py --setup
 
 This will execute the `indexify-local/get_latest` script and download the `all_extractors.json` file.
 
-### Populate Local Extractors
+### Download and Setup Extractors
 
-Edit the `local_extractors.json` file to include your preferred extractors from the `all_extractors.json` file:
+To download all available extractors from a remote repository, use:
 
-```json
-[
-  {
-    "type": "embedding",
-    "module_name": "clip_embedding.openai_clip_extractor:ClipEmbeddingExtractor"
-  }
-]
+```bash
+python xfi-local.py --all-extractors
+```
+
+Alternatively, to download specific extractors based on a JSON file:
+
+```bash
+python xfi-local.py --local-extractors path_to_your_extractor_file.json
 ```
 
 ### Configuration Files
 
-Generate the `indexify.init.config` file:
+Generate the `indexify.init.config` and `supervisord.conf` files:
 
 ```bash
-python indexify-local.py --make-init-config
+python xfi-local.py --make-init-config
+python xfi-local.py --make-conf
 ```
 
-Then, generate the `supervisord.conf` file:
+### Adding a New Local Extractor Chain
+
+To add a new extractor chain based on a recipe, use the following command:
 
 ```bash
-python indexify-local.py --make-conf
+python xfi-local.py --new-local path_to_your_recipe.json
 ```
 
-### Starting Indexify Local
+This command updates the policies and configuration based on the provided recipe.
 
-To start Indexify Local, use the following command:
+### Resetting Indexify Local
+
+To reset the environment by removing all logs and configuration files, use:
 
 ```bash
-python indexify-local.py --start
+python xfi-local.py --reset
 ```
 
-### Folder Permissions
-
-Ensure the `_local_data` and `_watch_folder` directories have the necessary permissions:
+To clear only the logs:
 
 ```bash
-Utils/_local_folders_permissions
+python xfi-local.py --clear-logs
 ```
 
-## Usage
+## Running Indexify Local
 
-Here are the available commands for managing Indexify Local:
+### Starting the Server
+
+To start Indexify Local with default scripts:
 
 ```bash
-usage: indexify-local.py [-h] [--all-extractors] [--local-extractors] [--start [SCRIPT]] [--setup] [--make-conf] [--make-init-config]
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --all-extractors     Download all extractors from the default GitHub URL
-  --local-extractors   Download extractors from the default local JSON file (local_extractors.json)
-  --start [SCRIPT]     Path to the bash script to execute (default: run start_env and start_xfi)
-  --setup              Run the setup process (get_latest script and download all_extractors.json)
-  --make-conf          Generate supervisord.conf based on local-extractors.json
-  --make-init-config   Generate indexify.init.config based on the template
+python xfi-local.py --start
 ```
+
+For a custom start script, replace the default with your script:
+
+```bash
+python xfi-local.py --start path_to_your_script.sh
+```
+
+### Monitoring and Control
+
+Run the process monitor tool if needed:
+
+```bash
+./run_supervisord
+```
+
+### Check the UI
+
+To see if your extractors and chains are added correctly check the UI
+
+Start the UI:
+
+```bash
+./start_ui
+```
+
+Access UI at `http://localhost:3000/ui`.
+
+For more details on how to use the UI, please visit:
+
+[Official Indexify UI Help Docs](https://getindexify.com/ui/)
