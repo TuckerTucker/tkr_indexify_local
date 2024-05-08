@@ -9,4 +9,4 @@ cd ..
 /bin/rm -r indexify-local/indexify.init.config
 /bin/rm -r supervisord.conf
 
-# /bin/rm -r _local_data/supervisor/supervisord.pid
+/bin/rm -r _local_data/supervisor/supervisord.pid

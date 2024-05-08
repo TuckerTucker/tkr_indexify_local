@@ -3,7 +3,7 @@ import argparse
 import requests
 import time
 import logging
-from xfi.setup import setup, reset
+from xfi.setup import setup, reset, clear_logs
 from xfi.extractor_downloader import download_all_extractors
 from xfi.script_runner import run_bash_script, run_default_scripts
 from xfi.supervisord_conf_generator import generate_supervisord_conf
@@ -26,13 +26,17 @@ def main():
     parser.add_argument("--make-init-config", action="store_true", help="Generate indexify.init.config based on the template")
     parser.add_argument("--new-local", metavar="RECIPE_PATH", help="Path to the new_recipe.json file")
     parser.add_argument("--reset", action="store_true", help="Removes all logs and config files")
+    parser.add_argument("--clear-logs", action="store_true", help="Removes all logs")
+                        
     args = parser.parse_args()
 
     try:
         if args.setup:
             setup()
         elif args.reset:
-            reset()            
+            reset()      
+        elif args.clear_logs:
+            clear_logs()                        
         elif args.all_extractors:
             download_all_extractors()
         elif args.local_extractors:

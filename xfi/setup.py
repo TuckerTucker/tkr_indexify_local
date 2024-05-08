@@ -25,3 +25,13 @@ def reset():
         print("reset_local script executed successfully")
     except subprocess.CalledProcessError as e:
         print(f"Error executing reset_local script: {e}")
+
+def clear_logs():
+    """
+    Clear all logs
+    """
+    try:
+        subprocess.run(["bash", "clear_logs"], cwd="utils", check=True)
+        print("clear_logs script executed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing reset_local script: {e}")
