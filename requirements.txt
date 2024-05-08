@@ -1,0 +1,6 @@
+requests
+indexify
+indexify-extractor-sdk
+supervisor
+filelock
+watchdog

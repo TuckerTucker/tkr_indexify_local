@@ -1,24 +1,49 @@
 # logs etc
 __pycache__
+
+# Ignore contents of specific local data folders but include the folders
 _local_data/indexify/*
+!_local_data/indexify/.gitkeep
+!_local_data/indexify/
+
 _local_data/supervisor/logs/*
+!_local_data/supervisor/logs/.gitkeep
+!_local_data/supervisor/logs/
+
+# Ignore specific log files
 supervisord.log
 supervisord.pid
 supervisord.conf
 
+# Ignore contents of watch folder but include the folder
 _watch_folder/*
+!_watch_folder/.gitkeep
+!_watch_folder/
+
+# Ignore specific local data log files
 _local_data/watch_folder.log
 _local_data/xfi-local.log
+
+# Environment and configuration folders
 indexify_env
+
+# Ignore contents of extractors-json but include the folder
 indexify-local/extractors-json/*
+!indexify-local/extractors-json/.gitkeep
+!indexify-local/extractors-json/
+
+
+# Configuration init file
 indexify-local/indexify.init.config
 
+# Sample media files
 sample.mp3
 sample.pdf
 
-#tkr stuff
+# Miscellaneous development files
 _testing
 _next_steps.md
 
-# the indexify binary
+
+# Binary file
 indexify-local/indexify
