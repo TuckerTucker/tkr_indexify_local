@@ -15,3 +15,13 @@ def setup():
 
     # Download the all_extractors.json file
     download_all_extractors()
+
+def reset():
+    """
+    Clear all logs and config files
+    """
+    try:
+        subprocess.run(["bash", "clear_all"], cwd="utils", check=True)
+        print("clear_all script executed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing clear_all script: {e}")

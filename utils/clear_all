@@ -1,7 +1,12 @@
 #!/bin/bash
 
 cd ..
+
 /bin/rm -rf _local_data/indexify
 /bin/rm -r _local_data/supervisor/logs/*
 /bin/rm -r _local_data/supervisor/supervisord.log
+/bin/rm -r _local_data/xfi-local.log
+/bin/rm -r indexify-local/indexify.init.config
+/bin/rm -r supervisord.conf
+
 # /bin/rm -r _local_data/supervisor/supervisord.pid

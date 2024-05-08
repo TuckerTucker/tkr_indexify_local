@@ -21,7 +21,7 @@
             priority=3
 
             [program:watch_folder]
-            command=python utils/watch-folder/watch_folder.py
+            command=python xfi/watch_folder.py
             autostart=true
             autorestart=true
             stderr_logfile=_local_data/supervisor/logs/watch_folder.err.log

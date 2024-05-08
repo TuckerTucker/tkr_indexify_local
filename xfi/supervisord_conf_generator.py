@@ -1,10 +1,14 @@
 import json
 
-def generate_supervisord_conf(input_file, output_file, template_file, chain_name):
+def generate_supervisord_conf(input_file, output_file, template_file, chain_name='default_chain'):
     try:
         with open(input_file, "r") as file:
             data = json.load(file)
-            extractors = data["extractors"]
+            if data[0]: # is this actually working? 
+                extractors = data
+            else:
+                extractors = data["extractors"]
+                
 
         extractor_programs = ""
         for extractor in extractors:

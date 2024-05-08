@@ -5,22 +5,25 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from indexify import IndexifyClient
 from mime_types import MimeTypes
-import logging
+from logger import configure_logging
+import logging, logger
 
 # Configure logging
-logging.basicConfig(filename='_local_data/watch_folder.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+configure_logging()
 
 class FileHandler(FileSystemEventHandler):
+    logging.info("Starting: FileHandler")
     def on_created(self, event):
         try:
             if event.is_directory:
+                logging.info(f"Processing: Directory {event.src_path}")
                 self.process_directory(event.src_path)
             else:
+                logging.info(f"Processing: File {event.src_path}")
                 self.process_file(event.src_path)
         except Exception as e:
             logging.error(f"Error processing event: {event}")
-            logging.exception(e)  # Log the full exception traceback
+            logging.exception(e)  # Log the full exception traceback    
 
     def process_directory(self, directory_path):
         try:
@@ -76,6 +79,7 @@ folder_to_watch = "_watch_folder"
 
 # Start watching the folder
 try:
+    logging.info(f"Watching: Folder {folder_to_watch}")
     watch_folder(folder_to_watch)
 except Exception as e:
     print(f"Error starting folder watching: {folder_to_watch}")
