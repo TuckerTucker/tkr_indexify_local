@@ -4,7 +4,7 @@ def generate_supervisord_conf(input_file, output_file, template_file, chain_name
     try:
         with open(input_file, "r") as file:
             data = json.load(file)
-            if data[0]: # is this actually working? 
+            if data[0]: 
                 extractors = data
             else:
                 extractors = data["extractors"]

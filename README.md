@@ -52,7 +52,7 @@ To add a new local recipe, use the following command:
 Run the setup process with this command:
 
 ```bash
-python indexify-local.py --setup
+python xfi-local.py --setup
 ```
 
 This will execute the `indexify-local/get_latest` script and download the `all_extractors.json` file.
