@@ -5,7 +5,7 @@ from typing import Dict, Any
 from indexify import IndexifyClient
 from xfi.supervisord_conf_generator import generate_supervisord_conf
 from xfi.indexify_config_generator import create_indexify_config
-from xfi.local_logger import configure_logging
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()

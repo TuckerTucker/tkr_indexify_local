@@ -1,8 +1,8 @@
 import json
 import os
 import logging
-from typing import Optional
-from xfi.local_logger import configure_logging
+from typing import List, Dict, Any
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()
@@ -18,10 +18,10 @@ def generate_supervisord_conf(input_file: str, output_file: str, template_file: 
         chain_name (str): Name of the chain to be used in the supervisord configuration.
     """
     logging.info("Starting to generate supervisord configuration file.")
+    logging.info(f"Using files: Input={input_file}, Output={output_file}, Template={template_file}")
     try:
         with open(input_file, "r") as file:
-            data = json.load(file)
-            extractors = data.get("extractors", [])
+            extractors: List[Dict[str, Any]] = json.load(file)
 
         extractor_programs = ""
         for extractor in extractors:
@@ -42,7 +42,10 @@ def generate_supervisord_conf(input_file: str, output_file: str, template_file: 
 
         supervisord_conf = template.replace("{extractor_programs}", extractor_programs.strip())
 
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        # Ensure the directory exists
+        output_dir = os.path.dirname(output_file) or '.'
+        os.makedirs(output_dir, exist_ok=True)
+
         with open(output_file, "w") as file:
             file.write(supervisord_conf)
 

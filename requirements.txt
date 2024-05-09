@@ -4,3 +4,4 @@ indexify-extractor-sdk
 supervisor
 filelock
 watchdog
+whisper

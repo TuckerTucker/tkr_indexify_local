@@ -1,7 +1,7 @@
 import json
 import os
 import logging
-from xfi.local_logger import configure_logging
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()

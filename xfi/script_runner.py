@@ -1,7 +1,7 @@
 import subprocess
 import logging
 from typing import List
-from xfi.local_logger import configure_logging
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()

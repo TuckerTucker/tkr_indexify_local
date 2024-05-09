@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEventHandler
 from indexify import IndexifyClient
 from mime_types import MimeTypes
 import logging
-from xfi.local_logger import configure_logging
+from local_logger import configure_logging
 
 
 # Configure logging

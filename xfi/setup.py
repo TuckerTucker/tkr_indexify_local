@@ -2,7 +2,7 @@ import subprocess
 import logging
 from typing import NoReturn
 from .extractor_downloader import download_all_extractors
-from xfi.local_logger import configure_logging
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()

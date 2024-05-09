@@ -4,7 +4,7 @@ import subprocess
 import requests
 from typing import Optional
 import logging
-from xfi.local_logger import configure_logging
+from .local_logger import configure_logging
 
 # Configure logging
 configure_logging()
@@ -97,13 +97,17 @@ def download_extractors(input_file: str) -> None:
     """
     Download extractors specified in the local extractors JSON file and update the list.
     Adjusted to handle the format of whisper_chain.json.
+    Creates a new JSON file if it does not exist and sets read/write permissions.
     """
     logging.info("Starting download of extractors")
 
     if not os.path.exists(input_file):
-        logging.error(f"The specified file '{input_file}' does not exist.")
-        print(f"Error: The specified file '{input_file}' does not exist.")
-        return
+        logging.warning(f"The specified file '{input_file}' does not exist. Creating a new file.")
+        with open(input_file, "w") as file:
+            json.dump({"extractors": []}, file)
+        # Set file permissions to read/write for user, and read for group and others
+        os.chmod(input_file, 0o644)
+        print(f"Created a new file with read/write permissions: {input_file}")
 
     try:
         with open(input_file, "r") as file:
