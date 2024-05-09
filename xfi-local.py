@@ -3,17 +3,17 @@ import argparse
 import requests
 import time
 import logging
+from typing import NoReturn
 from xfi.setup import setup, reset, clear_logs
-from xfi.extractor_downloader import download_all_extractors
+from xfi.extractor_downloader import download_all_extractors, download_extractors
 from xfi.script_runner import run_bash_script, run_default_scripts
 from xfi.supervisord_conf_generator import generate_supervisord_conf
 from xfi.indexify_config_generator import create_indexify_config
 from xfi.templates import load_templates
 from xfi.new_local import NewLocal
-from xfi.logger import configure_logging
-from xfi.extractor_downloader import download_extractors
+from xfi.local_logger import configure_logging
 
-def main():
+def main() -> NoReturn:
     configure_logging()
     logging.info("Starting main function")
 

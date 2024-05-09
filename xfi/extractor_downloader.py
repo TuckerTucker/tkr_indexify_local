@@ -4,10 +4,10 @@ import subprocess
 import requests
 from typing import Optional
 import logging
+from xfi.local_logger import configure_logging
 
-logging.basicConfig(filename='app.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
+# Configure logging
+configure_logging()
 
 def download_all_extractors(url: str = None, output_file: str = "indexify-local/extractors-json/all_extractors.json") -> None:
     """
