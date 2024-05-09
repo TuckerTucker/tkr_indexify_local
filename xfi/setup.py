@@ -51,6 +51,14 @@ def setup(chain_file: str = "whisper_chain.json") -> NoReturn:
         output_file=templates['indexify']['output_path']
     )
     
+    try:
+        subprocess.run(["bash", "setup_ui"], cwd="utils", check=True)
+        logging.info("install ui successful")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error installing ui: {e}")
+        raise RuntimeError(f"Error installing ui: {e}")
+
+
     # Download the all_extractors.json file
     download_all_extractors()
 
