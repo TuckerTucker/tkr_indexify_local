@@ -3,7 +3,7 @@
     "extractors":[
         {
             "type": "audio",
-            "module_name": "whisper-mlx.whisper_extractor:WhisperExtractor"
+            "module_name": "whisper-asr.whisper_extractor:WhisperExtractor"
         },
         {
             "type": "embedding",
