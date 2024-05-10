@@ -36,10 +36,10 @@
             stdout_logfile=_local_data/supervisor/logs/minilm-l6.out.log
             priority=3
             
-            [program:whisper-mlx]
-            command=indexify-extractor join-server whisper-mlx.whisper_extractor:WhisperExtractor --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
+            [program:whisper-asr]
+            command=indexify-extractor join-server whisper-asr.whisper_extractor:WhisperExtractor --coordinator-addr localhost:8950 --ingestion-addr localhost:8900
             autostart=true
             autorestart=true
-            stderr_logfile=_local_data/supervisor/logs/whisper-mlx.err.log
-            stdout_logfile=_local_data/supervisor/logs/whisper-mlx.out.log
+            stderr_logfile=_local_data/supervisor/logs/whisper-asr.err.log
+            stdout_logfile=_local_data/supervisor/logs/whisper-asr.out.log
             priority=3
