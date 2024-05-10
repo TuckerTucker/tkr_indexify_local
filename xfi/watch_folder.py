@@ -1,89 +1,62 @@
-import os
 import time
-import mimetypes
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from indexify import IndexifyClient
+import mimetypes
 from mime_types import MimeTypes
 import logging
+from indexify import IndexifyClient
 from local_logger import configure_logging
 
-
-# Configure logging
+# Set up logging
 configure_logging()
 
-class FileHandler(FileSystemEventHandler):
-    def on_created(self, event) -> None:
-        """
-        Handle the event when a file or directory is created.
-        """
-        logging.info(f"Event detected: {event.src_path}")
-        if event.is_directory:
-            logging.info(f"Directory created: {event.src_path}")
-            self.process_directory(event.src_path)
-        else:
-            logging.info(f"File created: {event.src_path}")
-            self.process_file(event.src_path)
+class IndexifyClient:
+    def upload_file(self, path: str) -> None:
+        # Simulate file upload
+        logging.info(f"Simulated upload of {path}")
 
-    def process_directory(self, directory_path: str) -> None:
-        """
-        Process each file in a newly created directory.
-        """
-        logging.info(f"Processing directory: {directory_path}")
+def on_new_file(path: str) -> None:
+    """Function to run when a new file is added, checks MIME type and uploads if appropriate."""
+    mime_type, _ = mimetypes.guess_type(path)
+    if mime_type in MimeTypes.MIMES:
+        logging.info(f"Processing and uploading file: {path}")
         try:
-            for root, _, files in os.walk(directory_path):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    self.process_file(file_path)
+            client = IndexifyClient()
+            client.upload_file(path=path)
+            logging.info(f"File uploaded successfully: {path}")
         except Exception as e:
-            logging.error(f"Error processing directory: {directory_path}")
-            logging.exception(e)
+            logging.error(f"Failed to upload file: {path}. Error: {e}")
+    else:
+        logging.info(f"Skipped file (unsupported MIME type): {path}")
 
-    def process_file(self, file_path: str) -> None:
-        """
-        Process a file if it matches the MIME types specified in MimeTypes.
-        """
-        logging.info(f"Processing file: {file_path}")
+class Watcher:
+    def __init__(self, directory_to_watch: str) -> None:
+        self.observer = Observer()
+        self.directory_to_watch = directory_to_watch
+
+    def run(self) -> None:
+        event_handler = Handler()
+        self.observer.schedule(event_handler, self.directory_to_watch, recursive=True)
+        self.observer.start()
+        logging.info(f"Started watching directory: {self.directory_to_watch}")
         try:
-            mime_type, _ = mimetypes.guess_type(file_path)
-            if mime_type in MimeTypes.MIMES:
-                logging.info(f"Accepted MIME type: {mime_type} for file: {file_path}")
-                client = IndexifyClient()
-                client.upload_file(path=file_path)
-            else:
-                logging.warning(f"Unsupported MIME type: {mime_type} for file: {file_path}")
+            while True:
+                time.sleep(5)
+        except KeyboardInterrupt:
+            self.observer.stop()
+            logging.info("Stopped watching directory")
         except Exception as e:
-            logging.error(f"Error processing file: {file_path}")
-            logging.exception(e)
+            logging.error(f"Error: {e}")
+            self.observer.stop()
+        self.observer.join()
 
-def watch_folder(folder_path: str) -> None:
-    """
-    Monitor a folder for any new files or directories.
-    """
-    logging.info(f"Starting to watch folder: {folder_path}")
-    event_handler = FileHandler()
-    observer = Observer()
-    observer.schedule(event_handler, folder_path, recursive=True)
-    observer.start()
+class Handler(FileSystemEventHandler):
+    @staticmethod
+    def on_created(event) -> None:
+        if not event.is_directory:
+            on_new_file(event.src_path)
 
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-        logging.info("Folder watching stopped by user.")
-    except Exception as e:
-        logging.error(f"Error in folder watching: {folder_path}")
-        logging.exception(e)
-    finally:
-        observer.join()
-
-# Specify the folder path to watch
-folder_to_watch = "_watch_folder"
-
-# Start watching the folder
-try:
-    watch_folder(folder_to_watch)
-except Exception as e:
-    logging.error(f"Error starting folder watching: {folder_to_watch}")
-    logging.exception(e)
+if __name__ == "__main__":
+    path = "/path/to/watch/directory"
+    w = Watcher(path)
+    w.run()
