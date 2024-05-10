@@ -1,38 +1,20 @@
 import time
+import os  # Import the os module
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import mimetypes
-from mime_types import MimeTypes
 import logging
+import argparse
 from indexify import IndexifyClient
 from local_logger import configure_logging
 
 # Set up logging
 configure_logging()
 
-class IndexifyClient:
-    def upload_file(self, path: str) -> None:
-        # Simulate file upload
-        logging.info(f"Simulated upload of {path}")
-
-def on_new_file(path: str) -> None:
-    """Function to run when a new file is added, checks MIME type and uploads if appropriate."""
-    mime_type, _ = mimetypes.guess_type(path)
-    if mime_type in MimeTypes.MIMES:
-        logging.info(f"Processing and uploading file: {path}")
-        try:
-            client = IndexifyClient()
-            client.upload_file(path=path)
-            logging.info(f"File uploaded successfully: {path}")
-        except Exception as e:
-            logging.error(f"Failed to upload file: {path}. Error: {e}")
-    else:
-        logging.info(f"Skipped file (unsupported MIME type): {path}")
-
-class Watcher:
+class WatchFolder:
     def __init__(self, directory_to_watch: str) -> None:
         self.observer = Observer()
-        self.directory_to_watch = directory_to_watch
+        self.directory_to_watch = os.path.abspath(directory_to_watch)  # Get the absolute path
+        logging.info(f"Initialized WatchFolder with directory: {self.directory_to_watch}")
 
     def run(self) -> None:
         event_handler = Handler()
@@ -44,19 +26,27 @@ class Watcher:
                 time.sleep(5)
         except KeyboardInterrupt:
             self.observer.stop()
-            logging.info("Stopped watching directory")
+            logging.info("Stopped watching directory due to KeyboardInterrupt")
         except Exception as e:
-            logging.error(f"Error: {e}")
+            logging.error(f"Error: {e}", exc_info=True)  # Log the full exception information
             self.observer.stop()
         self.observer.join()
+        logging.info(f"Stopped watching directory: {self.directory_to_watch}")
 
 class Handler(FileSystemEventHandler):
     @staticmethod
     def on_created(event) -> None:
         if not event.is_directory:
-            on_new_file(event.src_path)
+            Handler().on_new_file(event.src_path)  # Call the instance method
+
+    def on_new_file(self, file_path: str) -> None:  # Instance method
+        client = IndexifyClient()
+        client.upload_file(path=file_path)
+        logging.info(f"New file created and uploaded: {file_path}")
 
 if __name__ == "__main__":
-    path = "/path/to/watch/directory"
-    w = Watcher(path)
+    parser = argparse.ArgumentParser()  # Create an ArgumentParser object
+    parser.add_argument("--directory", help="Directory to be watched", default="_watch_folder")  # Add argument with default value
+    args = parser.parse_args()  # Parse the arguments
+    w = WatchFolder(args.directory)  # Pass the directory as an argument
     w.run()
