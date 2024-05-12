@@ -1,0 +1,17 @@
+{
+    "name":"PDF-extraction",
+    "extractors":[
+        {
+            "type": "pdf",
+            "module_name": "pdf-extractor.pdf_extractor:PDFExtractor"
+        },
+        {
+            "type": "text",
+            "module_name": "chunking.chunk_extractor:ChunkExtractor"
+        },
+        {
+            "type": "embedding",
+            "module_name": "flag_embedding.bge_base:BGEBase"
+        }
+    ]
+}  
