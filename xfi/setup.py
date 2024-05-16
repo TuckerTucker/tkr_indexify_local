@@ -48,7 +48,7 @@ def setup(chain_file: str = "whisper_chain.json") -> NoReturn:
     input_file_list = templates['supervisord']['input_file']
     input_file_path = input_file_list
     full_path = os.path.abspath(input_file_path)
-    
+    logging.info(full_path)
     generate_supervisord_conf(
         input_file=full_path,
         output_file=templates['supervisord']['output_path'],
